@@ -18,3 +18,19 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+test/controllers/mensajes_controller_test.rb
+
+test/controllers/salas_controller_test.rb
+
+test/fixtures/mensajes.yml
+
+test/fixtures/salas.yml
+
+test/fixtures/users.yml
+
+test/models/mensaje_test.rb
+
+test/models/sala_test.rb
+
+test/models/user_test.rb
