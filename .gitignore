@@ -44,3 +44,7 @@ test/controllers/refresh_controller_test.rb
 test/controllers/signin_controller_test.rb
 
 test/controllers/signup_controller_test.rb
+
+prueba-desarrollador-frontend/yarn.lock
+
+yarn.lock
