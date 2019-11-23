@@ -3,13 +3,42 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import VueAxios from 'vue-axios'
+import VModal from 'vue-js-modal'
+import VueBus from 'vue-bus'
+import ActionCableVue from 'actioncable-vue'
+// import '@/assets/styles/tailwind.css'
 
+// import VueMoment from 'vue-moment'
+// import '@/assets/tailwind.css'
+
+// import { securedAxiosInstance, plainAxiosInstance } from './backend/axios'
+// import './main.css'
+
+Vue.use(require('vue-moment'))
+Vue.use(VModal, { dynamic: true, injectModalsContainer: true })
+Vue.use(VueBus)
 Vue.config.productionTip = false
+// Vue.use(VueMoment)
+
+// Vue.use(VueAxios, {
+//   secured: securedAxiosInstance,
+//   plain: plainAxiosInstance
+// })
+
+Vue.use(ActionCableVue, {
+  debug: true,
+  debugLevel: 'error',
+  connectionUrl: 'ws://localhost:3000/cable',
+  connectImmediately: true
+})
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  // securedAxiosInstance,
+  // plainAxiosInstance,
   components: { App },
   template: '<App/>'
 })
