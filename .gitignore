@@ -34,3 +34,13 @@ test/models/mensaje_test.rb
 test/models/sala_test.rb
 
 test/models/user_test.rb
+
+test/controllers/home_controller_test.rb
+
+test/controllers/refres_controller_test.rb
+
+test/controllers/refresh_controller_test.rb
+
+test/controllers/signin_controller_test.rb
+
+test/controllers/signup_controller_test.rb
