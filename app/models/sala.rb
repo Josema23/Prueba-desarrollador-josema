@@ -3,6 +3,6 @@ class Sala
   field :nombre, type: String
 
   belongs_to :user
-  has_many :messages
+  has_many :mensajes
 
 end
