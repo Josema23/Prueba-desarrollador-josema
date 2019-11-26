@@ -9,7 +9,7 @@ require "rails"
 # require "action_controller/railtie"
 # require "action_mailer/railtie"
 # require "action_view/railtie"
-# require "action_cable/engine"
+require "action_cable/engine"
 # require "sprockets/railtie"
 # require "rails/test_unit/railtie"
 
@@ -23,6 +23,9 @@ Bundler.require(*Rails.groups)
   action_mailer
   active_resource
   rails/test_unit
+  active_model
+  action_controller
+  action_view
 ).each do |framework|
 begin
   require "#{framework}/railtie"
