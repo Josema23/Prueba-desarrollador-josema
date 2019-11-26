@@ -1,4 +1,5 @@
 class SalasController < ApplicationController
+  before_action :authorize_access_request!
   before_action :set_sala, only: [:show, :update, :destroy]
 
   # GET /salas
@@ -15,10 +16,10 @@ class SalasController < ApplicationController
 
   # POST /salas
   def create
-    @sala = Sala.new(sala_params)
+    @sala = current_user.salas.build(sala_params)
 
     if @sala.save
-      render json: @sala, status: :created, location: @sala
+      render json: @sala, status: :created
     else
       render json: @sala.errors, status: :unprocessable_entity
     end
@@ -41,11 +42,12 @@ class SalasController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_sala
-      @sala = Sala.find(params[:id])
+      # @sala = Sala.find(params[:id])
+      @sala = current_user.salas.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
     def sala_params
-      params.require(:sala).permit(:nombre, :user_id)
+      params.require(:sala).permit(:nombre, :mensaje_id)
     end
 end

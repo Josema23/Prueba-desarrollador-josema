@@ -1,51 +1,58 @@
 class MensajesController < ApplicationController
-  before_action :set_mensaje, only: [:show, :update, :destroy]
+  before_action :authorize_access_request!
+  before_action :set_sala
+  # before_action :set_mensaje, only: [:show, :update, :destroy]
 
   # GET /mensajes
   def index
-    @mensajes = Mensaje.all
+    @mensaje = @sala.mensajes
 
-    render json: @mensajes
-  end
-
-  # GET /mensajes/1
-  def show
     render json: @mensaje
   end
 
+  # # GET /mensajes/1
+  # def show
+  #   render json: @mensaje
+  # end
+
   # POST /mensajes
   def create
-    @mensaje = Mensaje.new(mensaje_params)
+
+    @mensaje = current_user.mensajes.build(mensaje_params)
 
     if @mensaje.save
-      render json: @mensaje, status: :created, location: @mensaje
+      # ActionCable.server.broadcast "chat_#{params[:sala_id]}", message: @message
+      ActionCable.server.broadcast "chat_", mensaje: @mensaje
+      render json: @mensaje, status: :created
     else
       render json: @mensaje.errors, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /mensajes/1
-  def update
-    if @mensaje.update(mensaje_params)
-      render json: @mensaje
-    else
-      render json: @mensaje.errors, status: :unprocessable_entity
-    end
-  end
+  # # PATCH/PUT /mensajes/1
+  # def update
+  #   if @mensaje.update(mensaje_params)
+  #     render json: @mensaje
+  #   else
+  #     render json: @mensaje.errors, status: :unprocessable_entity
+  #   end
+  # end
 
-  # DELETE /mensajes/1
-  def destroy
-    @mensaje.destroy
-  end
+  # # DELETE /mensajes/1
+  # def destroy
+  #   @mensaje.destroy
+  # end
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_mensaje
-      @mensaje = Mensaje.find(params[:id])
+    def set_sala
+      if params[:sala_id]
+        @sala = Sala.find(params[:sala_id])
+      end
     end
 
     # Only allow a trusted parameter "white list" through.
     def mensaje_params
-      params.require(:mensaje).permit(:cuerpo, :sala_id, :users_id)
+      params.require(:mensaje).permit(:cuerpo, :sala_id)
     end
 end
