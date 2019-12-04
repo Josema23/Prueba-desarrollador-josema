@@ -5,15 +5,15 @@ class MensajesController < ApplicationController
 
   # GET /mensajes
   def index
-    @mensaje = @sala.mensajes
-
+    @mensaje = @sala.mensajes.desc('_id').limit(20)
     render json: @mensaje
+    # render :json => {:mensajes => @mensaje, :user => @user }
   end
 
-  # # GET /mensajes/1
-  # def show
-  #   render json: @mensaje
-  # end
+  # GET /mensajes/1
+  def show
+    render json: @mensaje
+  end
 
   # POST /mensajes
   def create
@@ -30,18 +30,18 @@ class MensajesController < ApplicationController
   end
 
   # # PATCH/PUT /mensajes/1
-  # def update
-  #   if @mensaje.update(mensaje_params)
-  #     render json: @mensaje
-  #   else
-  #     render json: @mensaje.errors, status: :unprocessable_entity
-  #   end
-  # end
+  def update
+    if @mensaje.update(mensaje_params)
+      render json: @mensaje
+    else
+      render json: @mensaje.errors, status: :unprocessable_entity
+    end
+  end
 
   # # DELETE /mensajes/1
-  # def destroy
-  #   @mensaje.destroy
-  # end
+  def destroy
+    @mensaje.destroy
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

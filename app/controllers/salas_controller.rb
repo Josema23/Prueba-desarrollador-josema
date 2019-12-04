@@ -5,7 +5,6 @@ class SalasController < ApplicationController
   # GET /salas
   def index
     @salas = Sala.all
-
     render json: @salas
   end
 
@@ -48,6 +47,7 @@ class SalasController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def sala_params
-      params.require(:sala).permit(:nombre, :mensaje_id)
+      params.require(:sala).permit(:nombre, :mensaje_id,
+      users_attributes: [:id, :nombre, :email])
     end
 end
