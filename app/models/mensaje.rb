@@ -4,6 +4,9 @@ class Mensaje
 
   field :cuerpo, type: String
 
-  belongs_to :user, foreign_key: :user_id
-  belongs_to :sala, foreign_key: :sala_id
+  validates :cuerpo, presence: true
+
+  belongs_to :user, required: false
+  belongs_to :sala, required: false
+
 end
