@@ -26,13 +26,14 @@
       <p v-if="errors.length">
         <b class="px-2">Por favor, corrija el(los) siguiente(s) error(es):</b>
         <ul>
-          <li class="text-gray-700 text-lg font-bold mb-2 px-2" v-for="error in errors" v-bind:key="error">{{ error }}</li>
+          <li class="text-red-700 text-lg font-bold mb-2 px-2" v-for="error in errors" v-bind:key="error">{{ error }}</li>
         </ul>
       </p>
     </div>
   </div>
 </template>
 <script>
+import EventBus from '@/eventBus'
 export default {
   name: 'createSala',
   data () {
@@ -46,7 +47,7 @@ export default {
   },
   methods: {
     beforeOpen (event) {
-      console.log(event.params)
+      // console.log(event.params)
     },
     setError (error, text) {
       this.error = (error.response && error.response.data && error.response.data.error) || text
@@ -60,8 +61,9 @@ export default {
         this.errors.push('Introduce un nombre')
       } else {
         this.$http.secured.post('/salas', {sala: {nombre: this.newSala.nombre}}).then(response => {
-          this.sala.push(response.data)
+          this.salas.push(response.data)
           this.newSala = []
+          EventBus.$emit('DATA_PUBLISHED', this.newSala)
         })
           .catch(error => this.setError(error, 'Error creando sala'))
         this.$emit('close')

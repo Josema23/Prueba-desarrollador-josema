@@ -2,21 +2,21 @@
   <div class="max-w-sm m-auto my-8">
     <div class="w-full max-w-xs">
       <form class="bg-blue-200 shadow-md rounded px-8 pt-6 pb-8 mb-4" @submit.prevent="signin">
-        <div class="text-red" v-if="error">{{error}}</div>
         <h3 class="block text-gray-700 text-lg font-bold mb-2"> Sign in </h3>
         <div class="mb-4">
-          <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email Address</label>
+          <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email</label>
           <input type="email" v-model="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email">
         </div>
         <div class="mb-4">
-          <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+          <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Contraseña</label>
           <input type="password" v-model="password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password">
         </div>
+        <div class="text-red-700 py-5" v-if="error">{{error}}</div>
 
-        <button type="submit" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">Sign in</button>
+        <button type="submit" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">Entrar</button>
 
         <div class="my-4">
-          <router-link to="/signup" class="font-bold text-sm text-blue-500 hover:text-blue-800">Sign Up</router-link>
+          <p>¿No tienes cuenta?</p><router-link to="/signup" class="font-bold text-sm text-blue-500 hover:text-blue-800">Registrate</router-link>
         </div>
       </form>
     </div>

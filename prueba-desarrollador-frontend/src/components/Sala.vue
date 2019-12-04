@@ -3,25 +3,23 @@
     <div class="text-red" v-if="error">{{ error }}</div>
     <div class = "py-10">
       <div>
-        <img src="@/assets/chat_logo.png" width="50px">
-      </div>
-      <div>
         <router-link to="/salas" tag="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Salas de Chat</router-link>
       </div>
       <!-- <button type="input"></button> -->
     </div>
     <div class="exterior">
-      <div class="border border-black w-6/12 h-auto ">
+      <div class="chat">
         <ul>
           <li v-for="mensaje in mensajes" :key="mensaje.id">
             <div v-if="mensaje.mensaje">
               <p>
-                [{{mensaje.mensaje.created_at | moment("HH:mm:ss")}}] > {{mensaje.mensaje.cuerpo}}
-                <!-- [{{data.mensaje.created_at | moment("HH:mm:ss")}}] > {{data.mensaje.cuerpo}} -->
+                [{{mensaje.mensajes.created_at | moment("HH:mm:ss")}}] > {{mensaje.mensajes.cuerpo}}
+                <!-- {{mensaje}} -->
               </p>
             </div>
             <div v-else>
               <p>
+                <!-- {{mensaje}} -->
                 [{{mensaje.created_at | moment("HH:mm:ss")}}] > {{mensaje.cuerpo}}
               </p>
             </div>
@@ -46,7 +44,7 @@
             <p v-if="errors.length">
               <b class="px-2">Por favor, corrija el(los) siguiente(s) error(es):</b>
               <ul>
-                <li class="text-gray-700 text-lg font-bold mb-2 px-2" v-for="error in errors" v-bind:key="error">{{ error }}</li>
+                <li class="text-red-700 text-lg font-bold mb-2 px-2" v-for="error in errors" v-bind:key="error">{{ error }}</li>
               </ul>
             </p>
           </div>
@@ -78,8 +76,12 @@ export default {
       connected () { console.log('Conectado') },
       rejected () { console.log('No se ha podido conectar') },
       received (mensaje) {
-        this.mensajes.push(mensaje)
-        console.log(mensaje)
+        const idSala = this.$route.params.id
+        this.$http.secured.get('mensajes/' + idSala).then(response => {
+          this.mensajes = response.data
+          // this.mensajes.push(mensaje)
+        })
+        // console.log(mensaje)
       },
       disconnected () { console.log('Desconectado del chat') }
     }
@@ -97,8 +99,8 @@ export default {
       const idSala = this.$route.params.id
       this.$http.secured.get('mensajes/' + idSala).then(response => {
         this.mensajes = response.data
-        console.log('Response mensajes')
-        console.log(response.data)
+        // console.log('Response mensajes')
+        // console.log(response.data)
       })
         .catch(error => this.setError(error, 'Algo fue mal en created'))
     }
@@ -117,9 +119,12 @@ export default {
         this.errors.push('Escribe algo!')
       } else {
         this.errors = []
+        const idSala = this.$route.params.id
         this.$http.secured.post('/mensajes', {mensaje: {cuerpo: this.newMensaje.cuerpo, sala_id: salaId}})
           .then(response => {
-            // this.mensajes.push(response.data)
+            this.$http.secured.get('mensajes/' + idSala).then(response => {
+              this.mensajes = response.data
+            })
             const mensaje = response.data
             this.sendMessage(mensaje)
             this.newMensaje = []
@@ -142,10 +147,6 @@ export default {
 </script>
 
 <style lang="css">
-  .jumbotron {
-    /* display: flex;
-    justify-content: center; */
-  }
 
   .text-red {
     color: #cf0c0c
@@ -154,6 +155,7 @@ export default {
   .chat {
     border: 1px solid black;
     width: 50%;
+    height: 500px;
     display: flex;
     justify-content: center
   }
@@ -187,7 +189,7 @@ export default {
   }
 
   .input{
-    width: 450px;
+    width: 100%;
   }
 
 </style>
